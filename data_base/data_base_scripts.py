@@ -2,42 +2,36 @@ import psycopg2
 
 
 class DB:
-    def DB_connect(self):
+    def DB_connect(self) -> None:
         self.connection = psycopg2.connect(dbname='database', 
                                     user='postgres', 
                                     password='$NS$//1907',
                                     host='localhost')
 
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.DB_connect()
         self.connection.close()
 
-    def create_table(self):
+    def create_table(self) -> None:
         self.DB_connect()
         try:
             with self.connection.cursor() as cursor:
                 self.connection.autocommit = True
-                sql_create_tb_test_data_query = """CREATE TABLE IF NOT EXISTS tests_data (
-                    test_id BIGSERIAL PRIMARY KEY, 
-                    time_after_start INTEGER, 
-                    akb_voltage DOUBLE PRECISION, 
-                    pressure DOUBLE PRECISION, 
-                    tank_temp DOUBLE PRECISION, 
-                    engine_wall_temp DOUBLE PRECISION, 
-                    valve_temp DOUBLE PRECISION, 
-                    valve_current DOUBLE PRECISION, 
-                    heating_current DOUBLE PRECISION)"""
+                sql_create_tb_test_data_query = """CREATE TABLE IF NOT EXISTS users (
+                    login TEXT PRIMARY KEY, 
+                    password TEXT,
+                    level TEXT, 
+                    name TEXT, 
+                    score INTEGER)"""
 
                 cursor.execute(sql_create_tb_test_data_query)
                 
-                sql_create_tb_test_descr_query = """CREATE TABLE IF NOT EXISTS tests_descr (
-                    test_id INTEGER PRIMARY KEY,
-                    duration INTEGER, 
-                    brh_opn INTEGER, 
-                    brh_cls INTEGER, 
-                    before_time INTEGER, 
-                    status BOOLEAN)"""
+                sql_create_tb_test_descr_query = """CREATE TABLE IF NOT EXISTS free_tests (
+                    test_id BIGSERIAL PRIMARY KEY,
+                    question TEXT, 
+                    answer TEXT, 
+                    level TEXT)"""
                 cursor.execute(sql_create_tb_test_descr_query)
         finally:
             self.connection.close()
@@ -51,25 +45,33 @@ class DB:
         finally:
             self.connection.close()
 
-    def insert_data(self, test_id, time_after_start, akb_voltage, press, tank_temp, engine_wall_temp, valve_temp,
-                valve_current, heating_current):
+    def insert_data_users(self, login: str, password: str, level: str, name: str, score: int) -> None: 
         self.DB_connect()
         try:
             with self.connection.cursor() as cursor:
                 self.connection.autocommit = True
-                sql_insert_data_query = """INSERT INTO tests_data (test_id, time_after_start,
-                akb_voltage, pressure, tank_temp, engine_wall_temp, valve_temp,
-                valve_current, heating_current) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+                sql_insert_data_query = """INSERT INTO users (login, password,
+                level, name, score) VALUES (%s, %s, %s, %s, %s)"""
                 cursor.execute(sql_insert_data_query, (
-                            test_id, time_after_start, akb_voltage, press, tank_temp, engine_wall_temp,
-                            valve_temp, valve_current, heating_current))
+                            login, password, level, name, score))
         finally:
             self.connection.close()
 
     
-    def update_data(self, test_id, duration, brh_opn, brh_cls, before_time, status,
-                time_after_start, akb_voltage, press, tank_temp, engine_wall_temp,
-                valve_temp, valve_current, heating_current):
+    def __find_login(self, login: str) -> bool:
+        self.DB_connect()
+        try:
+            with self.connection.cursor() as cursor:
+                self.connection.autocommit = True
+                sql_find_login_query = f"SELECT login FROM users WHERE login = {login}"
+                cursor.execute(sql_find_login_query)
+                res = self.cursor.fetchone()
+                return res != None
+        finally:
+            self.connection.close()
+
+
+    def update_users_level(self, login: str, level: str) -> None:
         self.DB_connect()
         try:
             with self.connection.cursor() as cursor:
