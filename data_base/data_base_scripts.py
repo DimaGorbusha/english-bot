@@ -1,7 +1,10 @@
 import psycopg2
 
-
 class DB:
+    """
+        Класс базы данных со всеми методами для получения, изменения всех данных в таблицах.
+        Существует три таблицы: users - таблица с пользователями и их данными (логин, пароль, уровень знания англа, имя для обращения в боте, количество очков), одна строка - один пользователь; free_tests - бесплатные вопросы и ответы (уровень, вопрос, ответ), одна строка - один вопрос/ответ; premium_tests - платные вопросы и ответы (уровень, вопрос, ответ), одна строка - один вопрос/ответ.
+    """
     def __DB_connect(self) -> None: # Метод соединения с бд
         self.connection = psycopg2.connect(dbname='database', 
                                     user='postgres', 
@@ -110,15 +113,14 @@ class DB:
             self.connection.close()
 
     
-    def get_user_data(self, login:str):
+    def get_user_data(self, login:str) -> list: # Метод получения всех данных пользователя
         self.__DB_connect()
         try:
             with self.connection.cursor() as cursor:
                 self.connection.autocommit = True
                 sql_find_login_query = f"SELECT password, level, name, score  FROM users WHERE login = {login}"
                 cursor.execute(sql_find_login_query)
-                res = self.cursor.fetchone()
-                return res != None
+                return list(self.cursor.fetchone())
         finally:
             self.connection.close()
 
