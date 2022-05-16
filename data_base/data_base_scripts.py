@@ -1,3 +1,4 @@
+from hashlib import new
 import psycopg2
 
 
@@ -21,7 +22,7 @@ class DB:
                 sql_create_tb_test_data_query = """CREATE TABLE IF NOT EXISTS users (
                     login TEXT PRIMARY KEY, 
                     password TEXT,
-                    level TEXT, 
+                    level INTEGER, 
                     name TEXT, 
                     score INTEGER)"""
 
@@ -45,7 +46,7 @@ class DB:
         finally:
             self.connection.close()
 
-    def insert_data_users(self, login: str, password: str, level: str, name: str, score: int) -> None: 
+    def insert_data_users(self, login: str, password: str, level: int, name: str, score: int) -> None: 
         self.DB_connect()
         try:
             with self.connection.cursor() as cursor:
@@ -71,26 +72,48 @@ class DB:
             self.connection.close()
 
 
-    def update_users_level(self, login: str, level: str) -> None:
+    def update_user_level(self, login: str, level: int) -> None: # Метод обновления уровня знания английского в таблице пользователей
         self.DB_connect()
         try:
             with self.connection.cursor() as cursor:
                 self.connection.autocommit = True
-                sql_update_data_query = """UPDATE tests SET duration = %s, brh_open = %s, brh_cls = %s, before_time = %s,
-                status = %s, time_after_start = %s, akb_voltage = %s, press = %s, tank_temp = %s, engine_wall_temp = %s,
-                valve_temp = %s, valve_current = %s, heating_current = %s WHERE test_id = %s"""
-                cursor.execute(sql_update_data_query, (duration, brh_opn, brh_cls, before_time, status,
-                                 time_after_start, akb_voltage, press, tank_temp, engine_wall_temp,
-                                 valve_temp, valve_current, heating_current, test_id))
+                sql_update_users_level_query = """UPDATE users SET level = %s WHERE login = %s"""
+                cursor.execute(sql_update_users_level_query, (level, login))
         finally:
             self.connection.close()
 
     
-    def export_data_json(self):
+    def update_user_name(self, new_name: str, login: str) -> None: # Метод обновления пароля в таблице пользователей
         self.DB_connect()
         try:
             with self.connection.cursor() as cursor:
                 self.connection.autocommit = True
-            
+                sql_update_user_name_query = """UPDATE users SET name = %s WHERE login = %s"""
+                cursor.execute(sql_update_user_name_query, (new_name, login))
         finally:
+
+            self.connection.close()
+
+    
+    def update_user_score(self, score: int, login: str) -> None: # Метод обновления пароля в таблице пользователей
+        self.DB_connect()
+        try:
+            with self.connection.cursor() as cursor:
+                self.connection.autocommit = True
+                sql_update_user_name_query = """UPDATE users SET score = %s WHERE login = %s"""
+                cursor.execute(sql_update_user_name_query, (score, login))
+        finally:
+
+            self.connection.close()
+
+
+    def update_user_password(self, new_password: str, login: str) -> None: # Метод обновления пароля в таблице пользователей
+        self.DB_connect()
+        try:
+            with self.connection.cursor() as cursor:
+                self.connection.autocommit = True
+                sql_update_user_name_query = """UPDATE users SET password = %s WHERE login = %s"""
+                cursor.execute(sql_update_user_name_query, (new_password, login))
+        finally:
+
             self.connection.close()
