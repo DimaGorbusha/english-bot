@@ -1,4 +1,5 @@
 import psycopg2
+from random import randint
 
 class DB:
     """
@@ -130,6 +131,22 @@ class DB:
         try:
             with self.connection.cursor() as cursor:
                 self.connection.autocommit = True
+
+        finally:
+            self.connection.close()
+
+
+    def get_free_test_data(self, login:str) -> list: # Получение вопроса и ответа бесплатного теста
+        self.__DB_connect()
+        try:
+            with self.connection.cursor() as cursor:
+                self.connection.autocommit = True
+                num_test = randint(0, 100)
+                level  = self.get_user_data(login)
+                level = level[1]
+                sql_find_login_query = f"SELECT question, answer  FROM free_tests WHERE test_id = {num_test} level = {level}"
+                cursor.execute(sql_find_login_query)
+                return list(self.cursor.fetchone())
 
         finally:
             self.connection.close()
