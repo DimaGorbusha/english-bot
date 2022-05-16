@@ -110,6 +110,19 @@ class DB:
             self.connection.close()
 
     
+    def get_user_data(self, login:str):
+        self.__DB_connect()
+        try:
+            with self.connection.cursor() as cursor:
+                self.connection.autocommit = True
+                sql_find_login_query = f"SELECT password, level, name, score  FROM users WHERE login = {login}"
+                cursor.execute(sql_find_login_query)
+                res = self.cursor.fetchone()
+                return res != None
+        finally:
+            self.connection.close()
+
+
     def insert_description(self):
         self.__DB_connect()
         try:
