@@ -37,12 +37,12 @@ class DB:
                     level TEXT)"""
                 cursor.execute(sql_create_tb_free_test_query)
 
-                sql_create_tb_free_test_query = """CREATE TABLE IF NOT EXISTS premium_tests (
+                sql_create_tb_premium_test_query = """CREATE TABLE IF NOT EXISTS premium_tests (
                     test_id BIGSERIAL PRIMARY KEY,
                     link TEXT, 
                     answer TEXT, 
                     level TEXT)"""
-                cursor.execute(sql_create_tb_free_test_query)
+                cursor.execute(sql_create_tb_premium_test_query)
         finally:
             self.connection.close()
 
