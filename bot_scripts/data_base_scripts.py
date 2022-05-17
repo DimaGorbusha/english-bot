@@ -28,15 +28,21 @@ class DB:
                     level INTEGER, 
                     name TEXT, 
                     score INTEGER)"""
-
                 cursor.execute(sql_create_tb_test_data_query)
                 
-                sql_create_tb_test_descr_query = """CREATE TABLE IF NOT EXISTS free_tests (
+                sql_create_tb_free_test_query = """CREATE TABLE IF NOT EXISTS free_tests (
                     test_id BIGSERIAL PRIMARY KEY,
                     question TEXT, 
                     answer TEXT, 
                     level TEXT)"""
-                cursor.execute(sql_create_tb_test_descr_query)
+                cursor.execute(sql_create_tb_free_test_query)
+
+                sql_create_tb_free_test_query = """CREATE TABLE IF NOT EXISTS premium_tests (
+                    test_id BIGSERIAL PRIMARY KEY,
+                    link TEXT, 
+                    answer TEXT, 
+                    level TEXT)"""
+                cursor.execute(sql_create_tb_free_test_query)
         finally:
             self.connection.close()
 
