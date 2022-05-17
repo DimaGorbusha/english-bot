@@ -27,21 +27,21 @@ class DB:
                     password TEXT,
                     level INTEGER, 
                     name TEXT, 
-                    score INTEGER)"""
+                    score INTEGER)""" # Создание таблицы пользователей
                 cursor.execute(sql_create_tb_test_data_query)
                 
                 sql_create_tb_free_test_query = """CREATE TABLE IF NOT EXISTS free_tests (
                     test_id BIGSERIAL PRIMARY KEY,
                     question TEXT, 
                     answer TEXT, 
-                    level TEXT)"""
+                    level TEXT)""" # Создание таблицы бесплатных тестов
                 cursor.execute(sql_create_tb_free_test_query)
 
                 sql_create_tb_premium_test_query = """CREATE TABLE IF NOT EXISTS premium_tests (
                     test_id BIGSERIAL PRIMARY KEY,
                     link TEXT, 
                     answer TEXT, 
-                    level TEXT)"""
+                    level TEXT)""" # Создание таблицы платных тестов с голосовыми
                 cursor.execute(sql_create_tb_premium_test_query)
         finally:
             self.connection.close()
