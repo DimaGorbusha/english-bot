@@ -40,7 +40,8 @@ def signin_login(message):
 	else:
 		msg = bot.send_message(message.chat.id, 'К сожалению, учётной записи с таким логином не существует 😢\nВведите пароль для новой учётной записи с этим логином:')
 
-# def signin_password(message):
+def signin_password(message):
+	pass
 
 
 bot.infinity_polling()
