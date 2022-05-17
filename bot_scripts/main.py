@@ -19,29 +19,34 @@ main_menu_btn_signup = types.InlineKeyboardButton('🔐 Зарегистриро
 keyboard_main_menu.add(main_menu_btn_signin, main_menu_btn_signup) 
 
 @bot.message_handler(commands=['start'])
-def start(message):	
+def start(message) -> None:	
 	bot.send_message(message.chat.id, f'👋 Привет, я бот для изучения английского языка!\n Для начала, вам надо зарегистрироваться или войти:', reply_markup = keyboard_main_menu)
 
 
 @bot.callback_query_handler(func = lambda call: True)
-def buttons(call):
+def buttons(call) -> None:
 	call_data = call.data
 
 	if call_data == 'signin':
 		msg = bot.send_message(call.message.chat.id,'Введите логин:')
 		bot.register_next_step_handler(msg, signin_login)
 
-def signin_login(message):
+def signin_login(message) -> None:
 	login = message.text
 	res = data_base.get_user_data(login)
 	if res != None:
 		msg = bot.send_message(message.chat.id, '👍 Отлично! Введите пароль:')
-		bot.register_next_step_handler(msg, signin_password)
+		signin_password(msg, login, res[0])
 	else:
 		msg = bot.send_message(message.chat.id, 'К сожалению, учётной записи с таким логином не существует 😢\nВведите пароль для новой учётной записи с этим логином:')
 
-def signin_password(message):
-	pass
+def signin_password(message, password:str) -> None:
+	password_input = message.text
+	if password_input == password:
+		bot.send_message(message.chat.id, '')
+	else:
+		bot.send_message(message.chat.id, '😢 Неправильный пароль')
+		signin_password(message, password)
 
 
 bot.infinity_polling()
