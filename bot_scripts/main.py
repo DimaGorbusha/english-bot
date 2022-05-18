@@ -20,7 +20,7 @@ keyboard_main_menu.add(main_menu_btn_signin, main_menu_btn_signup)
 
 @bot.message_handler(commands=['start'])
 def start(message) -> None:	
-	bot.send_message(message.chat.id, f'👋 Привет, я бот для изучения английского языка!\n Для начала, вам надо зарегистрироваться или войти:', reply_markup = keyboard_main_menu)
+	bot.send_message(message.chat.id, f'👋 Привет, я бот изучения английского языка для работников IT!\n Для начала, вам надо зарегистрироваться или войти:', reply_markup = keyboard_main_menu)
 
 
 @bot.callback_query_handler(func = lambda call: True)
