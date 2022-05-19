@@ -101,7 +101,14 @@ def entrance_test(message) -> None:
 
 
 def free_lesson(message):
-	bot.send_message(message.chat.id, 'Сейчас вам нужно пройти тест, чтобы я понял, какой у вас уровень английского языка.\nУдачи!')
+	test_data = data_base.get_entrance_test_data()
+	bot.send_message(message.chat.id, test_data[0])
+	answer = message.text
+	if answer == test_data[1]:
+		bot.send_message(message.chat.id, '👍  Правильно!')
+		right_answer += 1
+	else:
+		bot.send_message(message.chat.id, '😢 Неправильно!')
 
 
 bot.infinity_polling()
