@@ -96,11 +96,11 @@ def signup_password(message, login: str) -> None: # Метод ввода пар
 	# PASTE DB QUERY
 
 
-def main_menu(message = None) -> None:
+def main_menu(message = None) -> None: # Главное меню со всеми кнопочками
 	bot.send_message(message.chat.id, 'Поздравляю, вы в главном меню! \nЧто вы хотите сделать?', reply_markup = keyboard_main_menu)
 
 
-def entrance_test(message) -> None:
+def entrance_test(message) -> None: # Вступительный тест для определения уровня знаний
 	bot.send_message(message.chat.id, 'Сейчас вам нужно пройти тест, чтобы я понял, какой у вас уровень английского языка.\nУдачи!')
 	test_data = data_base.get_entrance_test_data()
 	bot.send_message(message.chat.id, test_data[0])
@@ -112,8 +112,7 @@ def entrance_test(message) -> None:
 		bot.send_message(message.chat.id, '😢 Неправильно!')
 
 
-
-def free_lesson(message):
+def free_lesson(message): # Бесплатный урок
 	test_data = data_base.get_entrance_test_data()
 	bot.send_message(message.chat.id, test_data[0])
 	answer = message.text
@@ -124,4 +123,4 @@ def free_lesson(message):
 		bot.send_message(message.chat.id, '😢 Неправильно!')
 
 
-bot.infinity_polling()
+bot.infinity_polling() # Функция, чтобы бот не вылетал при ошибках
