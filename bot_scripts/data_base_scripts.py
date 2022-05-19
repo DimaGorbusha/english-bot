@@ -120,7 +120,7 @@ class DB:
             self.connection.close()
 
     
-    def get_user_data(self, login:str) -> list: # Метод получения всех данных пользователя
+    def  get_user_data(self, login:str) -> list: # Метод получения всех данных пользователя
         self.__DB_connect()
         try:
             with self.connection.cursor() as cursor:
