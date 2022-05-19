@@ -13,14 +13,26 @@ config = {
 bot = telebot.TeleBot(config['token'])
 
 #----Клавиатуры----
-keyboard_main_menu = types.InlineKeyboardMarkup(row_width = 1)
-main_menu_btn_signin = types.InlineKeyboardButton('🚪 Войти', callback_data = 'signin')
-main_menu_btn_signup = types.InlineKeyboardButton('🔐 Зарегистрироваться', callback_data = 'signup')
-keyboard_main_menu.add(main_menu_btn_signin, main_menu_btn_signup) 
+keyboard_login_menu = types.InlineKeyboardMarkup(row_width = 1)
+keyboard_main_menu = types.InlineKeyboardMarkup(row_width = 2)
 
+#----Кнопки----
+login_menu_btn_signin = types.InlineKeyboardButton('🚪 Войти', callback_data = 'signin')
+login_menu_btn_signup = types.InlineKeyboardButton('🔐 Зарегистрироваться', callback_data = 'signup')
+main_menu_btn_start = types.InlineKeyboardButton('👩‍🏫 Начать учиться', callback_data='start_learn')
+main_menu_btn_start = types.InlineKeyboardButton('🏫 Перейти к урокам', callback_data='goto_courses')
+main_menu_btn_buy_lessons = types.InlineKeyboardButton('💵 Купить премиум-уроки', callback_data='buy_premium_lessons')
+main_menu_btn_subscribe = types.InlineKeyboardButton('Купить подписку', callback_data='subscribe')
+
+
+
+keyboard_login_menu.add(login_menu_btn_signin, login_menu_btn_signup) 
+
+
+#----Основной код----
 @bot.message_handler(commands=['start'])
 def start(message) -> None:	
-	bot.send_message(message.chat.id, f'👋 Привет, я бот изучения английского языка для работников IT!\n Для начала, вам надо зарегистрироваться или войти:', reply_markup = keyboard_main_menu)
+	bot.send_message(message.chat.id, f'👋 Привет, я бот изучения английского языка для работников IT!\n Для начала, вам надо зарегистрироваться или войти:', reply_markup = keyboard_login_menu)
 
 
 @bot.callback_query_handler(func = lambda call: True)
@@ -49,6 +61,7 @@ def signin_password(message, password:str) -> None:
 	if password_input == password:
 		bot.send_message(message.chat.id, '')
 		# ПРОПИСАТЬ ВХОД ПО ПАРОЛЮ
+		# PASTE DB QUERY
 	else:
 		bot.send_message(message.chat.id, '😢 Неправильный пароль')
 		signin_password(message, password)
@@ -57,13 +70,20 @@ def signup_login(message) -> None:
 	login = message.text
 	res = data_base.get_user_data(login)
 	if res != None:
-		msg = bot.send_message(message.chat.id, 'Учётная запись с таким логином существует. \nВведите пароль для входа:')
+		msg = bot.send_message(message.chat.id, 'Учётная запись с таким логином уже существует. \nВведите пароль для входа:')
 		signin_password(msg, login, res[0])
+		# PASTE DB QUERY
 	else:
 		msg = bot.send_message(message.chat.id, '👍 Отлично! Теперь введите пароль:')
+		signup_password(msg, login)
 
 
 def signup_password(message, login: str) -> None:
-	pass
+	password_input = message.text
+	# PASTE DB QUERY
+
+
+def main_menu(message) -> None:
+	bot.send_message(message.chat.id, 'Поздравляю, вы в главном меню! \nЧто вы хотите сделать?', reply_markup = keyboard_main_menu)
 
 bot.infinity_polling()
