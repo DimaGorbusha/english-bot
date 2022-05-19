@@ -89,6 +89,8 @@ def main_menu(message) -> None:
 
 def entrance_test(message) -> None:
 	bot.send_message(message.chat.id, 'Сейчас вам нужно пройти тест, чтобы я понял, какой у вас уровень английского языка.\nУдачи!')
+	test = data_base.get_entrance_test_data()
+
 
 
 def free_lesson():

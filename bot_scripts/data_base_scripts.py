@@ -120,7 +120,7 @@ class DB:
             self.connection.close()
 
     
-    def  get_user_data(self, login:str) -> list: # Метод получения всех данных пользователя
+    def get_user_data(self, login:str) -> list: # Метод получения всех данных пользователя
         self.__DB_connect()
         try:
             with self.connection.cursor() as cursor:
@@ -142,16 +142,29 @@ class DB:
             self.connection.close()
 
 
+    def get_entrance_test_data(self) -> list:
+        self.__DB_connect()
+        try:
+            with self.connection.cursor() as cursor:
+                self.connection.autocommit = True
+                num_test = randint(0, 120)
+                sql_get_test_data_query = f"SELECT question, answer  FROM free_tests WHERE test_id = {num_test}"
+                cursor.execute(sql_get_test_data_query)
+                return list(self.cursor.fetchone())
+
+        finally:
+            self.connection.close()
+
+
     def get_free_test_data(self, login:str) -> list: # Получение вопроса и ответа бесплатного теста
         self.__DB_connect()
         try:
             with self.connection.cursor() as cursor:
                 self.connection.autocommit = True
-                num_test = randint(0, 100)
                 level  = self.get_user_data(login)
                 level = level[1]
-                sql_find_login_query = f"SELECT question, answer  FROM free_tests WHERE test_id = {num_test} level = {level}"
-                cursor.execute(sql_find_login_query)
+                sql_get_test_data_query = f"SELECT question, answer  FROM free_tests WHERE level = {level}"
+                cursor.execute(sql_get_test_data_query)
                 return list(self.cursor.fetchone())
 
         finally:
