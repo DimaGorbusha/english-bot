@@ -20,13 +20,13 @@ keyboard_main_menu = types.InlineKeyboardMarkup(row_width = 2)
 login_menu_btn_signin = types.InlineKeyboardButton('🚪 Войти', callback_data = 'signin')
 login_menu_btn_signup = types.InlineKeyboardButton('🔐 Зарегистрироваться', callback_data = 'signup')
 main_menu_btn_start = types.InlineKeyboardButton('👩‍🏫 Начать учиться', callback_data='start_learn')
-main_menu_btn_start = types.InlineKeyboardButton('🏫 Перейти к урокам', callback_data='goto_courses')
+main_menu_btn_lessons = types.InlineKeyboardButton('🏫 Перейти к урокам', callback_data='lessons')
 main_menu_btn_buy_lessons = types.InlineKeyboardButton('💵 Купить премиум-уроки', callback_data='buy_premium_lessons')
 main_menu_btn_subscribe = types.InlineKeyboardButton('Купить подписку', callback_data='subscribe')
 
-
-
+#----Добавление кнопок в клавы----
 keyboard_login_menu.add(login_menu_btn_signin, login_menu_btn_signup) 
+keyboard_main_menu.add(main_menu_btn_start, main_menu_btn_lessons, main_menu_btn_buy_lessons, main_menu_btn_subscribe)
 
 
 #----Основной код----
@@ -85,5 +85,14 @@ def signup_password(message, login: str) -> None:
 
 def main_menu(message) -> None:
 	bot.send_message(message.chat.id, 'Поздравляю, вы в главном меню! \nЧто вы хотите сделать?', reply_markup = keyboard_main_menu)
+
+
+def entrance_test(message) -> None:
+	bot.send_message(message.chat.id, 'Сейчас вам нужно пройти тест, чтобы я понял, какой у вас уровень английского языка.\nУдачи!')
+
+
+def free_lesson():
+	pass
+
 
 bot.infinity_polling()
