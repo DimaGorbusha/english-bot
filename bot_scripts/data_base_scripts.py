@@ -142,7 +142,7 @@ class DB:
             self.connection.close()
 
 
-    def get_entrance_test_data(self) -> list:
+    def get_test_data(self) -> list:
         self.__DB_connect()
         try:
             with self.connection.cursor() as cursor:
