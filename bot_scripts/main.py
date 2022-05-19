@@ -34,39 +34,41 @@ keyboard_back.add(back_btn)
 
 
 #----Основной код----
-@bot.message_handler(commands=['start'])
+@bot.message_handler(commands=['start']) # Обработчик команды старт
 def start(message) -> None:	
 	bot.send_message(message.chat.id, f'👋 Привет, я бот изучения английского языка для работников IT!\n Для начала, вам надо зарегистрироваться или войти:', reply_markup = keyboard_login_menu)
 
 
-@bot.callback_query_handler(func = lambda call: True)
+@bot.callback_query_handler(func = lambda call: True) # Обработчик callback'а
 def callback_processing(call) -> None:
 	call_data = call.data
 
-	if call_data == 'signin':
-		msg = bot.send_message(call.message.chat.id,'Введите логин:')
+	if call_data == 'signin': # Функция входа
+		msg = bot.send_message(call.message.chat.id,'Введите электронную почту:')
 		bot.register_next_step_handler(msg, signin_login)
 
-	elif call_data == 'signup':
-		msg = bot.send_message(call.message.chat.id,'Введите логин для регистрации:')
+	elif call_data == 'signup': # Функция регистрации
+		msg = bot.send_message(call.message.chat.id,'Введите электронную почту для регистрации:')
 		bot.register_next_step_handler(msg, signup_login)
 
-	elif call_data == 'info':
+	elif call_data == 'info': # ПРОПИСАТЬ ИНФУ О БОТЕ: КАК ЮЗАТЬ И ТД
 		msg = bot.send_message(call.message.chat.id, 'Введите логин для регистрации:', reply_markup = keyboard_back)
 
-	elif call_data == 'back':
+	elif call_data == 'back': # Возврат назад
 		main_menu()
 
-def signin_login(message) -> None:
+
+def signin_login(message) -> None: # Метод ввода логина для входа
 	login = message.text
 	res = data_base.get_user_data(login)
 	if res != None:
 		msg = bot.send_message(message.chat.id, '👍 Отлично! Введите пароль:')
 		signin_password(msg, login, res[0])
 	else:
-		msg = bot.send_message(message.chat.id, 'К сожалению, учётной записи с таким логином не существует 😢\nВведите пароль для новой учётной записи с этим логином:')
+		msg = bot.send_message(message.chat.id, 'К сожалению, учётной записи с такой электронной почтой не существует 😢\nВведите пароль для новой учётной записи с этой электронной почтой:')
 
-def signin_password(message, password:str) -> None:
+
+def signin_password(message, password:str) -> None: # Метод ввода пароля для входа
 	password_input = message.text
 	if password_input == password:
 		bot.send_message(message.chat.id, '')
@@ -76,7 +78,8 @@ def signin_password(message, password:str) -> None:
 		bot.send_message(message.chat.id, '😢 Неправильный пароль')
 		signin_password(message, password)
 
-def signup_login(message) -> None:
+
+def signup_login(message) -> None: # Метод ввода логина для регистрации
 	login = message.text
 	res = data_base.get_user_data(login)
 	if res != None:
@@ -88,7 +91,7 @@ def signup_login(message) -> None:
 		signup_password(msg, login)
 
 
-def signup_password(message, login: str) -> None:
+def signup_password(message, login: str) -> None: # Метод ввода пароля для регистрации
 	password_input = message.text
 	# PASTE DB QUERY
 
