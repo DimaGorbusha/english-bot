@@ -53,7 +53,7 @@ def signin_password(message, password:str) -> None:
 		bot.send_message(message.chat.id, '😢 Неправильный пароль')
 		signin_password(message, password)
 
-def signup_password(message) -> None:
+def signup_login(message) -> None:
 	login = message.text
 	res = data_base.get_user_data(login)
 	if res != None:
@@ -63,7 +63,7 @@ def signup_password(message) -> None:
 		msg = bot.send_message(message.chat.id, '👍 Отлично! Теперь введите пароль:')
 
 
-def signin_password(message, login: str) -> None:
+def signup_password(message, login: str) -> None:
 	pass
 
 bot.infinity_polling()
