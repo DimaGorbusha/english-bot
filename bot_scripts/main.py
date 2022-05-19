@@ -31,6 +31,10 @@ def buttons(call) -> None:
 		msg = bot.send_message(call.message.chat.id,'Введите логин:')
 		bot.register_next_step_handler(msg, signin_login)
 
+	elif call_data == 'signup':
+		msg = bot.send_message(call.message.chat.id,'Введите логин для регистрации:')
+		bot.register_next_step_handler(msg, signup_login)
+
 def signin_login(message) -> None:
 	login = message.text
 	res = data_base.get_user_data(login)
@@ -44,9 +48,22 @@ def signin_password(message, password:str) -> None:
 	password_input = message.text
 	if password_input == password:
 		bot.send_message(message.chat.id, '')
+		# ПРОПИСАТЬ ВХОД ПО ПАРОЛЮ
 	else:
 		bot.send_message(message.chat.id, '😢 Неправильный пароль')
 		signin_password(message, password)
 
+def signup_password(message) -> None:
+	login = message.text
+	res = data_base.get_user_data(login)
+	if res != None:
+		msg = bot.send_message(message.chat.id, 'Учётная запись с таким логином существует. \nВведите пароль для входа:')
+		signin_password(msg, login, res[0])
+	else:
+		msg = bot.send_message(message.chat.id, '👍 Отлично! Теперь введите пароль:')
+
+
+def signin_password(message, login: str) -> None:
+	pass
 
 bot.infinity_polling()
