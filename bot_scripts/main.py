@@ -15,6 +15,7 @@ bot = telebot.TeleBot(config['token'])
 #----Клавиатуры----
 keyboard_login_menu = types.InlineKeyboardMarkup(row_width = 1)
 keyboard_main_menu = types.InlineKeyboardMarkup(row_width = 2)
+keyboard_back = types.InlineKeyboardMarkup(row_width = 1)
 
 #----Кнопки----
 login_menu_btn_signin = types.InlineKeyboardButton('🚪 Войти', callback_data = 'signin')
@@ -23,11 +24,13 @@ main_menu_btn_start = types.InlineKeyboardButton('👩‍🏫 Начать уч�
 main_menu_btn_lessons = types.InlineKeyboardButton('🏫 Перейти к урокам', callback_data='lessons')
 main_menu_btn_buy_lessons = types.InlineKeyboardButton('💵 Купить премиум-уроки', callback_data='buy_premium_lessons')
 main_menu_btn_subscribe = types.InlineKeyboardButton('💵 Купить подписку', callback_data='subscribe')
-main_menu_btn_info = types.InlineKeyboardButton('ℹ️ FAQ', callback_data='subscribe')
+main_menu_btn_info = types.InlineKeyboardButton('ℹ️ FAQ', callback_data='info')
+back_btn = types.InlineKeyboardButton('⬅️ Назад', callback_data='back')
 
 #----Добавление кнопок в клавы----
 keyboard_login_menu.add(login_menu_btn_signin, login_menu_btn_signup) 
 keyboard_main_menu.add(main_menu_btn_start, main_menu_btn_lessons, main_menu_btn_buy_lessons, main_menu_btn_subscribe, main_menu_btn_info)
+keyboard_back.add(back_btn)
 
 
 #----Основной код----
@@ -37,7 +40,7 @@ def start(message) -> None:
 
 
 @bot.callback_query_handler(func = lambda call: True)
-def buttons(call) -> None:
+def callback_processing(call) -> None:
 	call_data = call.data
 
 	if call_data == 'signin':
@@ -47,6 +50,12 @@ def buttons(call) -> None:
 	elif call_data == 'signup':
 		msg = bot.send_message(call.message.chat.id,'Введите логин для регистрации:')
 		bot.register_next_step_handler(msg, signup_login)
+
+	elif call_data == 'info':
+		msg = bot.send_message(call.message.chat.id, 'Введите логин для регистрации:', reply_markup = keyboard_back)
+
+	elif call_data == 'back':
+		main_menu()
 
 def signin_login(message) -> None:
 	login = message.text
@@ -84,7 +93,7 @@ def signup_password(message, login: str) -> None:
 	# PASTE DB QUERY
 
 
-def main_menu(message) -> None:
+def main_menu(message = None) -> None:
 	bot.send_message(message.chat.id, 'Поздравляю, вы в главном меню! \nЧто вы хотите сделать?', reply_markup = keyboard_main_menu)
 
 
@@ -107,7 +116,7 @@ def free_lesson(message):
 	answer = message.text
 	if answer == test_data[1]:
 		bot.send_message(message.chat.id, '👍  Правильно!')
-		right_answer += 1
+		data_base.increase_user_score()
 	else:
 		bot.send_message(message.chat.id, '😢 Неправильно!')
 

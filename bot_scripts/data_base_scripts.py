@@ -171,7 +171,7 @@ class DB:
             self.connection.close()
 
 
-    def increase_score(self, login:str) -> None: # Метод увеличения кол-ва очков юзвера по логину
+    def increase_user_score(self, login:str) -> None: # Метод увеличения кол-ва очков юзвера по логину
         self.__DB_connect()
         try:
             with self.connection.cursor() as cursor:
