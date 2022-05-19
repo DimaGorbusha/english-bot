@@ -22,11 +22,12 @@ login_menu_btn_signup = types.InlineKeyboardButton('🔐 Зарегистрир�
 main_menu_btn_start = types.InlineKeyboardButton('👩‍🏫 Начать учиться', callback_data='start_learn')
 main_menu_btn_lessons = types.InlineKeyboardButton('🏫 Перейти к урокам', callback_data='lessons')
 main_menu_btn_buy_lessons = types.InlineKeyboardButton('💵 Купить премиум-уроки', callback_data='buy_premium_lessons')
-main_menu_btn_subscribe = types.InlineKeyboardButton('Купить подписку', callback_data='subscribe')
+main_menu_btn_subscribe = types.InlineKeyboardButton('💵 Купить подписку', callback_data='subscribe')
+main_menu_btn_info = types.InlineKeyboardButton('ℹ️ FAQ', callback_data='subscribe')
 
 #----Добавление кнопок в клавы----
 keyboard_login_menu.add(login_menu_btn_signin, login_menu_btn_signup) 
-keyboard_main_menu.add(main_menu_btn_start, main_menu_btn_lessons, main_menu_btn_buy_lessons, main_menu_btn_subscribe)
+keyboard_main_menu.add(main_menu_btn_start, main_menu_btn_lessons, main_menu_btn_buy_lessons, main_menu_btn_subscribe, main_menu_btn_info)
 
 
 #----Основной код----

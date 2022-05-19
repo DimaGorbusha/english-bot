@@ -169,3 +169,17 @@ class DB:
 
         finally:
             self.connection.close()
+
+
+    def increase_score(self, login:str) -> None: # Метод увеличения кол-ва очков юзвера по логину
+        self.__DB_connect()
+        try:
+            with self.connection.cursor() as cursor:
+                self.connection.autocommit = True
+                user_data  = self.get_user_data(login)
+                user_data[3] += 100
+                sql_update_user_score_query = """UPDATE users SET score = %s WHERE login = %s"""
+                cursor.execute(sql_update_user_score_query, (user_data[3], login))
+
+        finally:
+            self.connection.close()
