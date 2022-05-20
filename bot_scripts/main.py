@@ -13,13 +13,14 @@ config = {
 bot = telebot.TeleBot(config['token'])
 
 #----Клавиатуры----
-keyboard_login_menu = types.InlineKeyboardMarkup(row_width = 1)
+keyboard_login_menu = types.InlineKeyboardMarkup(row_width = 2)
 keyboard_main_menu = types.InlineKeyboardMarkup(row_width = 2)
 keyboard_back = types.InlineKeyboardMarkup(row_width = 1)
 
 #----Кнопки----
 login_menu_btn_signin = types.InlineKeyboardButton('🚪 Войти', callback_data = 'signin')
 login_menu_btn_signup = types.InlineKeyboardButton('🔐 Зарегистрироваться', callback_data = 'signup')
+login_menu_btn_test = types.InlineKeyboardButton('✏️ Тестовый режим', callback_data = 'try_test')
 main_menu_btn_start = types.InlineKeyboardButton('👩‍🏫 Начать учиться', callback_data='start_learn')
 main_menu_btn_lessons = types.InlineKeyboardButton('🏫 Перейти к урокам', callback_data='lessons')
 main_menu_btn_buy_lessons = types.InlineKeyboardButton('💵 Купить премиум-уроки', callback_data='buy_premium_lessons')
@@ -28,7 +29,7 @@ main_menu_btn_info = types.InlineKeyboardButton('ℹ️ FAQ', callback_data='inf
 back_btn = types.InlineKeyboardButton('⬅️ Назад', callback_data='back')
 
 #----Добавление кнопок в клавы----
-keyboard_login_menu.add(login_menu_btn_signin, login_menu_btn_signup) 
+keyboard_login_menu.add(login_menu_btn_signin, login_menu_btn_signup, login_menu_btn_test) 
 keyboard_main_menu.add(main_menu_btn_start, main_menu_btn_lessons, main_menu_btn_buy_lessons, main_menu_btn_subscribe, main_menu_btn_info)
 keyboard_back.add(back_btn)
 
