@@ -59,6 +59,15 @@ def callback_processing(call) -> None:
 	elif call_data == 'info': # ПРОПИСАТЬ ИНФУ О БОТЕ: КАК ЮЗАТЬ И ТД
 		msg = bot.send_message(call.message.chat.id, 'Введите логин для регистрации:', reply_markup = keyboard_back)
 
+	elif call_data == 'buy_premium_lessons': # ПРОПИСАТЬ ЧЕ НАДО ДЛЯ ПОКУПКИ
+		msg = bot.send_message(call.message.chat.id, 'В премиум уроки входят голосовые сообщения на английском, которые вы должны перевести. Для покупки НАДО', reply_markup = keyboard_back)
+
+	elif call_data == 'subscribe': # ПРОПИСАТЬ ЧЕ НАДО ДЛЯ ПОДПИСКИ
+		msg = bot.send_message(call.message.chat.id, 'Чтобы зарабатывать больше ECoin вы можете оформить несколько подписок: Beginner - на 5% больше ECoin, Intermediate - на 25% больше ECoin, Advanced - на 20% больше ECoin. Для подписки НАДО.')
+
+	elif call_data == 'try_test': # ПРОПИСАТЬ ЧЕ НАДО ДЛЯ ПОДПИСКИ
+		msg = bot.send_message(call.message.chat.id, 'Чтобы зарабатывать больше ECoin вы можете оформить несколько подписок: Beginner - на 5% больше ECoin, Intermediate - на 25% больше ECoin, Advanced - на 20% больше ECoin. Для подписки НАДО.')
+
 	elif call_data == 'back': # Возврат назад
 		main_menu()
 
