@@ -34,14 +34,14 @@ class DB:
                     test_id BIGSERIAL PRIMARY KEY,
                     question TEXT, 
                     answer TEXT, 
-                    level TEXT)""" # Создание таблицы бесплатных тестов
+                    level INTEGER)""" # Создание таблицы бесплатных тестов
                 cursor.execute(sql_create_tb_free_test_query)
 
                 sql_create_tb_premium_test_query = """CREATE TABLE IF NOT EXISTS premium_tests (
                     test_id BIGSERIAL PRIMARY KEY,
                     link TEXT, 
                     answer TEXT, 
-                    level TEXT)""" # Создание таблицы платных тестов с голосовыми
+                    level INTEGER)""" # Создание таблицы платных тестов с голосовыми
                 cursor.execute(sql_create_tb_premium_test_query)
         finally:
             self.connection.close()
@@ -66,7 +66,7 @@ class DB:
             with self.connection.cursor() as cursor:
                 self.connection.autocommit = True
                 sql_find_login_query = """SELECT login FROM users WHERE login = %s"""
-                cursor.execute(sql_find_login_query, (login))
+                cursor.execute(sql_find_login_query, (login,))
                 res = self.cursor.fetchone()
                 return res != None
         finally:
@@ -150,7 +150,7 @@ class DB:
                 level  = self.get_user_data(login)
                 level = level[1]
                 sql_get_test_data_query = """SELECT question, answer  FROM free_tests WHERE level = %s"""
-                cursor.execute(sql_get_test_data_query, (level))
+                cursor.execute(sql_get_test_data_query, (level,))
                 return list(self.cursor.fetchone())
 
         finally:
