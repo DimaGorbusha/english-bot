@@ -25,7 +25,7 @@ class DB:
                 sql_create_tb_test_data_query = """CREATE TABLE IF NOT EXISTS users (
                     login TEXT PRIMARY KEY, 
                     password TEXT,
-                    level TEXT, 
+                    level INTEGER, 
                     name TEXT, 
                     score INTEGER)""" # Создание таблицы пользователей
                 cursor.execute(sql_create_tb_test_data_query)
@@ -65,8 +65,8 @@ class DB:
         try:
             with self.connection.cursor() as cursor:
                 self.connection.autocommit = True
-                sql_find_login_query = f"SELECT login FROM users WHERE login = {login}"
-                cursor.execute(sql_find_login_query)
+                sql_find_login_query = """SELECT login FROM users WHERE login = %s"""
+                cursor.execute(sql_find_login_query, (login))
                 res = self.cursor.fetchone()
                 return res != None
         finally:
@@ -78,8 +78,8 @@ class DB:
         try:
             with self.connection.cursor() as cursor:
                 self.connection.autocommit = True
-                sql_update_users_level_query = f"UPDATE users SET level = {level} WHERE login = {login}"
-                cursor.execute(sql_update_users_level_query)
+                sql_update_users_level_query = """UPDATE users SET level = %s WHERE login = %s"""
+                cursor.execute(sql_update_users_level_query, (level, login))
         finally:
             self.connection.close()
 
@@ -89,8 +89,8 @@ class DB:
         try:
             with self.connection.cursor() as cursor:
                 self.connection.autocommit = True
-                sql_update_user_name_query = f"UPDATE users SET name = {new_name} WHERE login = {login}"
-                cursor.execute(sql_update_user_name_query)
+                sql_update_user_name_query = """UPDATE users SET name = %s WHERE login = %s"""
+                cursor.execute(sql_update_user_name_query, (new_name, login))
         finally:
 
             self.connection.close()
@@ -101,8 +101,8 @@ class DB:
         try:
             with self.connection.cursor() as cursor:
                 self.connection.autocommit = True
-                sql_update_user_name_query = f"UPDATE users SET score = {score} WHERE login = {login}"
-                cursor.execute(sql_update_user_name_query)
+                sql_update_user_name_query = """UPDATE users SET score = %s WHERE login = %s"""
+                cursor.execute(sql_update_user_name_query, (score, login))
         finally:
 
             self.connection.close()
@@ -113,8 +113,8 @@ class DB:
         try:
             with self.connection.cursor() as cursor:
                 self.connection.autocommit = True
-                sql_update_user_name_query = f"UPDATE users SET password = {new_password} WHERE login = {login}"
-                cursor.execute(sql_update_user_name_query)
+                sql_update_user_name_query = """UPDATE users SET password = %s WHERE login = %s"""
+                cursor.execute(sql_update_user_name_query, (new_password, login))
         finally:
 
             self.connection.close()
@@ -125,35 +125,21 @@ class DB:
         try:
             with self.connection.cursor() as cursor:
                 self.connection.autocommit = True
-                sql_find_login_query = f"SELECT password, level, name, score  FROM users WHERE login = {login}"
-                cursor.execute(sql_find_login_query)
+                sql_find_login_query = """SELECT password, level, name, score  FROM users WHERE login = %s"""
+                cursor.execute(sql_find_login_query, (login))
                 return list(self.cursor.fetchone())
         finally:
             self.connection.close()
 
 
-    def insert_description(self):
-        self.__DB_connect()
-        try:
-            with self.connection.cursor() as cursor:
-                self.connection.autocommit = True
+    # def insert_description(self):
+    #     self.__DB_connect()
+    #     try:
+    #         with self.connection.cursor() as cursor:
+    #             self.connection.autocommit = True
 
-        finally:
-            self.connection.close()
-
-
-    def get_test_data(self) -> list:
-        self.__DB_connect()
-        try:
-            with self.connection.cursor() as cursor:
-                self.connection.autocommit = True
-                num_test = randint(0, 120)
-                sql_get_test_data_query = f"SELECT question, answer  FROM free_tests WHERE test_id = {num_test}"
-                cursor.execute(sql_get_test_data_query)
-                return list(self.cursor.fetchone())
-
-        finally:
-            self.connection.close()
+    #     finally:
+    #         self.connection.close()
 
 
     def get_free_test_data(self, login:str) -> list: # Получение вопроса и ответа бесплатного теста
@@ -163,8 +149,8 @@ class DB:
                 self.connection.autocommit = True
                 level  = self.get_user_data(login)
                 level = level[1]
-                sql_get_test_data_query = f"SELECT question, answer  FROM free_tests WHERE level = {level}"
-                cursor.execute(sql_get_test_data_query)
+                sql_get_test_data_query = """SELECT question, answer  FROM free_tests WHERE level = %s"""
+                cursor.execute(sql_get_test_data_query, (level))
                 return list(self.cursor.fetchone())
 
         finally:
@@ -178,8 +164,11 @@ class DB:
                 self.connection.autocommit = True
                 user_data  = self.get_user_data(login)
                 user_data[3] += 100
-                sql_update_user_score_query = f"UPDATE users SET score = {user_data[3]} WHERE login = {login}"
-                cursor.execute(sql_update_user_score_query)
+                sql_update_user_score_query = """UPDATE users SET score = %s WHERE login = %s """
+                cursor.execute(sql_update_user_score_query, (user_data[3], login))
 
         finally:
             self.connection.close()
+
+data_base = DB()
+print(data_base.get_user_data('fffff'))
