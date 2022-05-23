@@ -16,6 +16,7 @@ bot = telebot.TeleBot(config['token'])
 keyboard_login_menu = types.InlineKeyboardMarkup(row_width = 2)
 keyboard_main_menu = types.InlineKeyboardMarkup(row_width = 2)
 keyboard_back = types.InlineKeyboardMarkup(row_width = 1)
+keyboard_lesson = types.InlineKeyboardMarkup(row_width = 1)
 
 #----Кнопки----
 login_menu_btn_signin = types.InlineKeyboardButton('🚪 Войти', callback_data = 'signin')
@@ -26,12 +27,14 @@ main_menu_btn_lessons = types.InlineKeyboardButton('🏫 Перейти к ур�
 main_menu_btn_buy_lessons = types.InlineKeyboardButton('💵 Купить премиум-уроки', callback_data='buy_premium_lessons')
 main_menu_btn_subscribe = types.InlineKeyboardButton('💵 Купить подписку', callback_data='subscribe')
 main_menu_btn_info = types.InlineKeyboardButton('ℹ️ FAQ', callback_data='info')
-back_btn = types.InlineKeyboardButton('⬅️ Назад', callback_data='back')
+back_btn = types.InlineKeyboardButton('⬅️ В меню', callback_data='back')
+continue_btn = types.InlineKeyboardButton('✅ Продолжить обучение', callback_data='continue')
 
 #----Добавление кнопок в клавы----
 keyboard_login_menu.add(login_menu_btn_signin, login_menu_btn_signup, login_menu_btn_test) 
 keyboard_main_menu.add(main_menu_btn_start, main_menu_btn_lessons, main_menu_btn_buy_lessons, main_menu_btn_subscribe, main_menu_btn_info)
 keyboard_back.add(back_btn)
+keyboard_lesson.add(back_btn, continue_btn)
 
 
 #----Основной код----
@@ -54,7 +57,7 @@ def callback_processing(call) -> None:
 
 	elif call_data == 'try_test': # Функция тестового режима
 		msg = bot.send_message(call.message.chat.id,'Добро пожаловать в тестовый режим!\n Здесь вы можете попробовать все функции бота абсолютно бесплатно! \n(Баллы в тестовом режиме не начисляются)')
-		bot.register_next_step_handler(msg, test_lesson)
+		bot.register_next_step_handler(msg, test_exercises)
 
 	elif call_data == 'info': # ПРОПИСАТЬ ИНФУ О БОТЕ: КАК ЮЗАТЬ И ТД
 		msg = bot.send_message(call.message.chat.id, 'Введите логин для регистрации:', reply_markup = keyboard_back)
@@ -65,8 +68,9 @@ def callback_processing(call) -> None:
 	elif call_data == 'subscribe': # ПРОПИСАТЬ ЧЕ НАДО ДЛЯ ПОДПИСКИ
 		msg = bot.send_message(call.message.chat.id, 'Чтобы зарабатывать больше ECoin вы можете оформить несколько подписок: Beginner - на 5% больше ECoin, Intermediate - на 25% больше ECoin, Advanced - на 20% больше ECoin. Для подписки НАДО.')
 
-	elif call_data == 'try_test': # ПРОПИСАТЬ ЧЕ НАДО ДЛЯ ПОДПИСКИ
-		msg = bot.send_message(call.message.chat.id, 'Чтобы зарабатывать больше ECoin вы можете оформить несколько подписок: Beginner - на 5% больше ECoin, Intermediate - на 25% больше ECoin, Advanced - на 20% больше ECoin. Для подписки НАДО.')
+	elif call_data == 'continue': # ПРОПИСАТЬ ЧЕ НАДО ДЛЯ ПОДПИСКИ
+		msg = bot.send_message(call.message.chat.id, 'Вы можете попробовать задания бота. Здесь будут как бесплатные, так и премиум-задания. Начнём!')
+		bot.register_next_step_handler(msg, test_exercises)
 
 	elif call_data == 'back': # Возврат назад
 		main_menu()
@@ -116,18 +120,7 @@ def main_menu(message = None) -> None: # Главное меню со всеми
 
 def entrance_test(message) -> None: # Вступительный тест для определения уровня знаний
 	bot.send_message(message.chat.id, 'Сейчас вам нужно пройти тест, чтобы я понял, какой у вас уровень английского языка.\nУдачи!')
-	test_data = data_base.get_entrance_test_data()
-	bot.send_message(message.chat.id, test_data[0])
-	answer = message.text
-	if answer == test_data[1]:
-		bot.send_message(message.chat.id, '👍  Правильно!')
-		right_answer += 1
-	else:
-		bot.send_message(message.chat.id, '😢 Неправильно!')
-
-
-def free_lesson(message): # Бесплатный урок
-	test_data = data_base.get_entrance_test_data()
+	test_data = data_base.get_free_test_data()
 	bot.send_message(message.chat.id, test_data[0])
 	answer = message.text
 	if answer == test_data[1]:
@@ -137,7 +130,26 @@ def free_lesson(message): # Бесплатный урок
 		bot.send_message(message.chat.id, '😢 Неправильно!')
 
 
-def test_lesson(message):
-	pass
+def free_lesson(message): # Бесплатный урок
+	test_data = data_base.get_free_test_data()
+	bot.send_message(message.chat.id, test_data[0])
+	answer = message.text
+	if answer == test_data[1]:
+		bot.send_message(message.chat.id, '👍  Правильно!', reply_markup=keyboard_lesson)
+		data_base.increase_user_score()
+	else:
+		bot.send_message(message.chat.id, '😢 Неправильно!', reply_markup=keyboard_lesson)
+
+
+def test_exercises(message):
+	test_data = data_base.get_free_test_data()
+	bot.send_message(message.chat.id, test_data[0])
+	answer = message.text
+	if answer == test_data[1]:
+		bot.send_message(message.chat.id, '👍  Правильно!')
+		data_base.increase_user_score()
+	else:
+		bot.send_message(message.chat.id, '😢 Неправильно!')
+
 
 bot.infinity_polling() # Функция, чтобы бот не вылетал при ошибках

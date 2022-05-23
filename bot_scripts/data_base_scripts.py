@@ -156,6 +156,10 @@ class DB:
         finally:
             self.connection.close()
 
+    
+    def get_premium_test_data(self):
+        pass
+
 
     def increase_user_score(self, login:str) -> None: # Метод увеличения кол-ва очков юзвера по логину
         self.__DB_connect()
