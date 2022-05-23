@@ -126,8 +126,8 @@ class DB:
             with self.connection.cursor() as cursor:
                 self.connection.autocommit = True
                 sql_find_login_query = """SELECT password, level, name, score  FROM users WHERE login = %s"""
-                cursor.execute(sql_find_login_query, (login))
-                return list(self.cursor.fetchone())
+                cursor.execute(sql_find_login_query, (login,))
+                return list(cursor.fetchone())
         finally:
             self.connection.close()
 
