@@ -78,8 +78,8 @@ class DB:
         try:
             with self.connection.cursor() as cursor:
                 self.connection.autocommit = True
-                sql_update_users_level_query = """UPDATE users SET level = %s WHERE login = %s"""
-                cursor.execute(sql_update_users_level_query, (level, login))
+                sql_update_users_level_query = f"UPDATE users SET level = {level} WHERE login = {login}"
+                cursor.execute(sql_update_users_level_query)
         finally:
             self.connection.close()
 
@@ -89,8 +89,8 @@ class DB:
         try:
             with self.connection.cursor() as cursor:
                 self.connection.autocommit = True
-                sql_update_user_name_query = """UPDATE users SET name = %s WHERE login = %s"""
-                cursor.execute(sql_update_user_name_query, (new_name, login))
+                sql_update_user_name_query = f"UPDATE users SET name = {new_name} WHERE login = {login}"
+                cursor.execute(sql_update_user_name_query)
         finally:
 
             self.connection.close()
@@ -101,8 +101,8 @@ class DB:
         try:
             with self.connection.cursor() as cursor:
                 self.connection.autocommit = True
-                sql_update_user_name_query = """UPDATE users SET score = %s WHERE login = %s"""
-                cursor.execute(sql_update_user_name_query, (score, login))
+                sql_update_user_name_query = f"UPDATE users SET score = {score} WHERE login = {login}"
+                cursor.execute(sql_update_user_name_query)
         finally:
 
             self.connection.close()
@@ -113,8 +113,8 @@ class DB:
         try:
             with self.connection.cursor() as cursor:
                 self.connection.autocommit = True
-                sql_update_user_name_query = """UPDATE users SET password = %s WHERE login = %s"""
-                cursor.execute(sql_update_user_name_query, (new_password, login))
+                sql_update_user_name_query = f"UPDATE users SET password = {new_password} WHERE login = {login}"
+                cursor.execute(sql_update_user_name_query)
         finally:
 
             self.connection.close()
@@ -178,8 +178,8 @@ class DB:
                 self.connection.autocommit = True
                 user_data  = self.get_user_data(login)
                 user_data[3] += 100
-                sql_update_user_score_query = """UPDATE users SET score = %s WHERE login = %s"""
-                cursor.execute(sql_update_user_score_query, (user_data[3], login))
+                sql_update_user_score_query = f"UPDATE users SET score = {user_data[3]} WHERE login = {login}"
+                cursor.execute(sql_update_user_score_query)
 
         finally:
             self.connection.close()
