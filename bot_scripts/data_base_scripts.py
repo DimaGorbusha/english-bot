@@ -7,7 +7,7 @@ class DB:
         Существует три таблицы: users - таблица с пользователями и их данными (логин, пароль, уровень знания англа, имя для обращения в боте, количество очков), одна строка - один пользователь; free_tests - бесплатные вопросы и ответы (уровень, вопрос, ответ), одна строка - один вопрос/ответ; premium_tests - платные вопросы и ответы (уровень, вопрос, ответ), одна строка - один вопрос/ответ.
     """
     def __DB_connect(self) -> None: # Метод соединения с бд
-        self.connection = psycopg2.connect(dbname='database', 
+        self.connection = psycopg2.connect(dbname='postgres', 
                                     user='postgres', 
                                     password='$NS$//1907',
                                     host='localhost')
