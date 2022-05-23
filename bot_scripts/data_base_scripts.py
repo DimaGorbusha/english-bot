@@ -25,7 +25,7 @@ class DB:
                 sql_create_tb_test_data_query = """CREATE TABLE IF NOT EXISTS users (
                     login TEXT PRIMARY KEY, 
                     password TEXT,
-                    level INTEGER, 
+                    level TEXT, 
                     name TEXT, 
                     score INTEGER)""" # Создание таблицы пользователей
                 cursor.execute(sql_create_tb_test_data_query)
