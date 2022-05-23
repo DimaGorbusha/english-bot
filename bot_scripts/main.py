@@ -150,6 +150,6 @@ def test_exercises(message):
 		data_base.increase_user_score()
 	else:
 		bot.send_message(message.chat.id, '😢 Неправильно!')
-
+	prem_test_data = data_base.get_premium_test_data()
 
 bot.infinity_polling() # Функция, чтобы бот не вылетал при ошибках
