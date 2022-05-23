@@ -54,7 +54,7 @@ def callback_processing(call) -> None:
 
 	elif call_data == 'try_test': # Функция тестового режима
 		msg = bot.send_message(call.message.chat.id,'Добро пожаловать в тестовый режим!\n Здесь вы можете попробовать все функции бота абсолютно бесплатно! \n(Баллы в тестовом режиме не начисляются)')
-		bot.register_next_step_handler(msg, signup_login)
+		bot.register_next_step_handler(msg, test_lesson)
 
 	elif call_data == 'info': # ПРОПИСАТЬ ИНФУ О БОТЕ: КАК ЮЗАТЬ И ТД
 		msg = bot.send_message(call.message.chat.id, 'Введите логин для регистрации:', reply_markup = keyboard_back)
@@ -127,5 +127,8 @@ def free_lesson(message): # Бесплатный урок
 	else:
 		bot.send_message(message.chat.id, '😢 Неправильно!')
 
+
+def test_lesson(message):
+	pass
 
 bot.infinity_polling() # Функция, чтобы бот не вылетал при ошибках
