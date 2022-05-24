@@ -173,6 +173,3 @@ class DB:
 
         finally:
             self.connection.close()
-
-data_base = DB()
-print(data_base.get_user_data('fffff'))
