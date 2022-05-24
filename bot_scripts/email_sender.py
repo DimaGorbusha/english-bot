@@ -1,5 +1,4 @@
-# bebra1488//\\ANUS&&
-# ITEng.bot@yandex.ru
+
 
 import smtplib
 import os
