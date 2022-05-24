@@ -27,6 +27,7 @@ main_menu_btn_start = types.InlineKeyboardButton('👩‍🏫 Начать уч�
 main_menu_btn_lessons = types.InlineKeyboardButton('🏫 Перейти к урокам', callback_data='lessons')
 main_menu_btn_buy_lessons = types.InlineKeyboardButton('💵 Купить премиум-уроки', callback_data='buy_premium_lessons')
 main_menu_btn_subscribe = types.InlineKeyboardButton('💵 Купить подписку', callback_data='subscribe')
+main_menu_btn_currency = types.InlineKeyboardButton('🤑 Мой счёт', callback_data='subscribe')
 main_menu_btn_info = types.InlineKeyboardButton('ℹ️ FAQ', callback_data='info')
 back_btn = types.InlineKeyboardButton('⬅️ В меню', callback_data='back')
 continue_btn = types.InlineKeyboardButton('✅ Продолжить обучение', callback_data='continue')
@@ -36,7 +37,7 @@ sub_advanced_btn = types.InlineKeyboardButton('👩‍💻 Тариф "Advanced"
 
 #----Добавление кнопок в клавы----
 keyboard_login_menu.add(login_menu_btn_signin, login_menu_btn_signup, login_menu_btn_test) 
-keyboard_main_menu.add(main_menu_btn_start, main_menu_btn_lessons, main_menu_btn_buy_lessons, main_menu_btn_subscribe, main_menu_btn_info)
+keyboard_main_menu.add(main_menu_btn_start, main_menu_btn_lessons, main_menu_btn_currency, main_menu_btn_buy_lessons, main_menu_btn_subscribe, main_menu_btn_info)
 keyboard_back.add(back_btn)
 keyboard_lesson.add(back_btn, continue_btn)
 keyboard_subs.add(sub_beginner_btn, sub_intermediate_btn, sub_advanced_btn)
