@@ -14,10 +14,9 @@ class DB:
 
 
     def __init__(self) -> None: # Метод инициализации объекта классаа
-        self.__DB_connect()
-        self.connection.close()
+        self.__create_table()
 
-    def create_table(self) -> None: # Метод создания таблиц
+    def __create_table(self) -> None: # Метод создания таблиц
         self.__DB_connect()
         try:
             with self.connection.cursor() as cursor:

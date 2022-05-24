@@ -27,7 +27,7 @@ main_menu_btn_start = types.InlineKeyboardButton('👩‍🏫 Начать уч�
 main_menu_btn_lessons = types.InlineKeyboardButton('🏫 Перейти к урокам', callback_data='lessons')
 main_menu_btn_buy_lessons = types.InlineKeyboardButton('💵 Купить премиум-уроки', callback_data='buy_premium_lessons')
 main_menu_btn_subscribe = types.InlineKeyboardButton('💵 Купить подписку', callback_data='subscribe')
-main_menu_btn_currency = types.InlineKeyboardButton('🤑 Мой счёт', callback_data='subscribe')
+main_menu_btn_currency = types.InlineKeyboardButton('🤑 Мой счёт', callback_data='user_currency')
 main_menu_btn_info = types.InlineKeyboardButton('ℹ️ FAQ', callback_data='info')
 back_btn = types.InlineKeyboardButton('⬅️ В меню', callback_data='back')
 continue_btn = types.InlineKeyboardButton('✅ Продолжить обучение', callback_data='continue')
@@ -37,7 +37,7 @@ sub_advanced_btn = types.InlineKeyboardButton('👩‍💻 Тариф "Advanced"
 
 #----Добавление кнопок в клавы----
 keyboard_login_menu.add(login_menu_btn_signin, login_menu_btn_signup, login_menu_btn_test) 
-keyboard_main_menu.add(main_menu_btn_start, main_menu_btn_lessons, main_menu_btn_currency, main_menu_btn_buy_lessons, main_menu_btn_subscribe, main_menu_btn_info)
+keyboard_main_menu.add(main_menu_btn_start, main_menu_btn_lessons, main_menu_btn_subscribe, main_menu_btn_buy_lessons, main_menu_btn_currency, main_menu_btn_info)
 keyboard_back.add(back_btn)
 keyboard_lesson.add(back_btn, continue_btn)
 keyboard_subs.add(sub_beginner_btn, sub_intermediate_btn, sub_advanced_btn)
@@ -46,7 +46,7 @@ keyboard_subs.add(sub_beginner_btn, sub_intermediate_btn, sub_advanced_btn)
 #----Основной код----
 @bot.message_handler(commands=['start']) # Обработчик команды старт
 def start(message) -> None:	
-	bot.send_message(message.chat.id, f'👋 Привет, я бот изучения английского языка для IT!\n Для начала, вам надо зарегистрироваться или войти:', reply_markup = keyboard_login_menu)
+	bot.send_message(message.chat.id, f'👋 Привет, я бот изучения английского языка для IT!\n Для начала, вам надо зарегистрироваться или войти:', reply_markup = keyboard_main_menu)
 
 
 @bot.callback_query_handler(func = lambda call: True) # Обработчик callback'а
@@ -72,7 +72,7 @@ def callback_processing(call) -> None:
 		msg = bot.send_message(call.message.chat.id, 'В премиум уроки входят голосовые сообщения на английском, которые вы должны перевести. Уроки можно покупать за ECoin', reply_markup = keyboard_back)
 
 	elif call_data == 'subscribe': # ПРОПИСАТЬ ЧЕ НАДО ДЛЯ ПОДПИСКИ
-		msg = bot.send_message(call.message.chat.id, '💰 Чтобы зарабатывать больше ECoin вы можете оформить несколько подписок: Beginner - на 5% больше ECoin, Intermediate - на 25% больше ECoin, Advanced - на 20% больше ECoin. Для подписки НАДО.', reply_markup = keyboard_subs)
+		msg = bot.send_message(call.message.chat.id, '💰 Чтобы зарабатывать больше ECoin вы можете оформить несколько подписок: Beginner - на 5% больше ECoin, Intermediate - на 25% больше ECoin, Advanced - на 50% больше ECoin. Для подписки НАДО.', reply_markup = keyboard_subs)
 
 	elif call_data == 'continue': # ПРОПИСАТЬ ЧЕ НАДО ДЛЯ ПОДПИСКИ
 		msg = bot.send_message(call.message.chat.id, 'Вы можете попробовать задания бота. Здесь будут как бесплатные, так и премиум-задания. Начнём!')
@@ -85,6 +85,10 @@ def callback_processing(call) -> None:
 		msg = bot.send_message(call.message.chat.id, 'Тариф "Intermediate"\nСюда входит 10%-скидка на премиум-уроки и вы зарабатываете на 25% больше ECoin.\nСтоимость: 139₽/мес')
 
 	elif call_data == 'advanced_sub':
+		msg = bot.send_message(call.message.chat.id, 'Тариф "Advanced"\nСюда входит 20%-скидка на премиум-уроки и вы зарабатываете на 50% больше ECoin.\nСтоимость: 199₽/мес')
+
+	elif call_data == 'user_currency':
+		# data_base.
 		msg = bot.send_message(call.message.chat.id, 'Тариф "Advanced"\nСюда входит 20%-скидка на премиум-уроки и вы зарабатываете на 50% больше ECoin.\nСтоимость: 199₽/мес')
 
 	elif call_data == 'back': # Возврат назад
