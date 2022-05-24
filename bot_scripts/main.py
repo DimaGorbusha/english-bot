@@ -17,6 +17,7 @@ keyboard_login_menu = types.InlineKeyboardMarkup(row_width = 2)
 keyboard_main_menu = types.InlineKeyboardMarkup(row_width = 2)
 keyboard_back = types.InlineKeyboardMarkup(row_width = 1)
 keyboard_lesson = types.InlineKeyboardMarkup(row_width = 1)
+keyboard_subs = types.InlineKeyboardMarkup(row_width = 1)
 
 #----Кнопки----
 login_menu_btn_signin = types.InlineKeyboardButton('🚪 Войти', callback_data = 'signin')
@@ -29,12 +30,16 @@ main_menu_btn_subscribe = types.InlineKeyboardButton('💵 Купить подп
 main_menu_btn_info = types.InlineKeyboardButton('ℹ️ FAQ', callback_data='info')
 back_btn = types.InlineKeyboardButton('⬅️ В меню', callback_data='back')
 continue_btn = types.InlineKeyboardButton('✅ Продолжить обучение', callback_data='continue')
+sub_beginner_btn = types.InlineKeyboardButton('👶 Тариф "Beginner"', callback_data='beginner_sub')
+sub_intermediate_btn = types.InlineKeyboardButton('👨‍🎓 Тариф "Intermediate"', callback_data='intermediate_sub')
+sub_advanced_btn = types.InlineKeyboardButton('👩‍💻 Тариф "Advanced"', callback_data='advanced_sub')
 
 #----Добавление кнопок в клавы----
 keyboard_login_menu.add(login_menu_btn_signin, login_menu_btn_signup, login_menu_btn_test) 
 keyboard_main_menu.add(main_menu_btn_start, main_menu_btn_lessons, main_menu_btn_buy_lessons, main_menu_btn_subscribe, main_menu_btn_info)
 keyboard_back.add(back_btn)
 keyboard_lesson.add(back_btn, continue_btn)
+keyboard_subs.add(sub_beginner_btn, sub_intermediate_btn, sub_advanced_btn)
 
 
 #----Основной код----
@@ -63,14 +68,23 @@ def callback_processing(call) -> None:
 		msg = bot.send_message(call.message.chat.id, 'Введите логин для регистрации:', reply_markup = keyboard_back)
 
 	elif call_data == 'buy_premium_lessons': # ПРОПИСАТЬ ЧЕ НАДО ДЛЯ ПОКУПКИ
-		msg = bot.send_message(call.message.chat.id, 'В премиум уроки входят голосовые сообщения на английском, которые вы должны перевести. Для покупки НАДО', reply_markup = keyboard_back)
+		msg = bot.send_message(call.message.chat.id, 'В премиум уроки входят голосовые сообщения на английском, которые вы должны перевести. Уроки можно покупать за ECoin', reply_markup = keyboard_back)
 
 	elif call_data == 'subscribe': # ПРОПИСАТЬ ЧЕ НАДО ДЛЯ ПОДПИСКИ
-		msg = bot.send_message(call.message.chat.id, 'Чтобы зарабатывать больше ECoin вы можете оформить несколько подписок: Beginner - на 5% больше ECoin, Intermediate - на 25% больше ECoin, Advanced - на 20% больше ECoin. Для подписки НАДО.')
+		msg = bot.send_message(call.message.chat.id, '💰 Чтобы зарабатывать больше ECoin вы можете оформить несколько подписок: Beginner - на 5% больше ECoin, Intermediate - на 25% больше ECoin, Advanced - на 20% больше ECoin. Для подписки НАДО.', reply_markup = keyboard_subs)
 
 	elif call_data == 'continue': # ПРОПИСАТЬ ЧЕ НАДО ДЛЯ ПОДПИСКИ
 		msg = bot.send_message(call.message.chat.id, 'Вы можете попробовать задания бота. Здесь будут как бесплатные, так и премиум-задания. Начнём!')
 		bot.register_next_step_handler(msg, test_exercises)
+
+	elif call_data == 'beginner_sub':
+		msg = bot.send_message(call.message.chat.id, 'Тариф "Beginner"\nСюда входит 5%-скидка на премиум-уроки и вы зарабатываете на 5% больше ECoin.\nСтоимость: 79₽/мес')
+
+	elif call_data == 'intermediate_sub':
+		msg = bot.send_message(call.message.chat.id, 'Тариф "Intermediate"\nСюда входит 10%-скидка на премиум-уроки и вы зарабатываете на 25% больше ECoin.\nСтоимость: 139₽/мес')
+
+	elif call_data == 'advanced_sub':
+		msg = bot.send_message(call.message.chat.id, 'Тариф "Advanced"\nСюда входит 20%-скидка на премиум-уроки и вы зарабатываете на 50% больше ECoin.\nСтоимость: 199₽/мес')
 
 	elif call_data == 'back': # Возврат назад
 		main_menu()
