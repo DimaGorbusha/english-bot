@@ -131,16 +131,6 @@ class DB:
             self.connection.close()
 
 
-    # def insert_description(self):
-    #     self.__DB_connect()
-    #     try:
-    #         with self.connection.cursor() as cursor:
-    #             self.connection.autocommit = True
-
-    #     finally:
-    #         self.connection.close()
-
-
     def get_free_test_data(self, login:str) -> list: # Получение вопроса и ответа бесплатного теста
         self.__DB_connect()
         try:
