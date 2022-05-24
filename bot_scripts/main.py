@@ -92,7 +92,7 @@ def callback_processing(call) -> None:
 		msg = bot.send_message(call.message.chat.id, 'Тариф "Advanced"\nСюда входит 20%-скидка на премиум-уроки и вы зарабатываете на 50% больше ECoin.\nСтоимость: 199₽/мес')
 
 	elif call_data == 'back': # Возврат назад
-		main_menu()
+		main_menu() 
 
 
 def signin_login(message) -> None: # Метод ввода логина для входа
