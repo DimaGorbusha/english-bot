@@ -88,8 +88,12 @@ def callback_processing(call) -> None:
 		msg = bot.send_message(call.message.chat.id, 'Тариф "Advanced"\nСюда входит 20%-скидка на премиум-уроки и вы зарабатываете на 50% больше ECoin.\nСтоимость: 199₽/мес')
 
 	elif call_data == 'user_currency':
-		# data_base.
-		msg = bot.send_message(call.message.chat.id, 'Тариф "Advanced"\nСюда входит 20%-скидка на премиум-уроки и вы зарабатываете на 50% больше ECoin.\nСтоимость: 199₽/мес')
+		# data_base.get_user_data(id)
+		# score = 
+		"""
+			Целиком переделать базу данных, сделать поиск по chat.id
+		"""
+		msg = bot.send_message(call.message.chat.id, f'Ваш счёт ECoin: + {score}')
 
 	elif call_data == 'back': # Возврат назад
 		main_menu() 
