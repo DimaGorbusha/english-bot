@@ -22,7 +22,8 @@ class DB:
             with self.connection.cursor() as cursor:
                 self.connection.autocommit = True
                 sql_create_tb_test_data_query = """CREATE TABLE IF NOT EXISTS users (
-                    login TEXT PRIMARY KEY, 
+                    login TEXT PRIMARY KEY,
+                    chat_id TEXT UNIQUE, 
                     password TEXT,
                     level INTEGER, 
                     name TEXT, 
