@@ -22,8 +22,8 @@ class DB:
             with self.connection.cursor() as cursor:
                 self.connection.autocommit = True
                 sql_create_tb_test_data_query = """CREATE TABLE IF NOT EXISTS users (
-                    login TEXT PRIMARY KEY,
-                    chat_id TEXT UNIQUE, 
+                    chat_id TEXT PRIMARY KEY,
+                    login TEXT UNIQUE, 
                     password TEXT,
                     level INTEGER, 
                     name TEXT, 
@@ -39,7 +39,7 @@ class DB:
 
                 sql_create_tb_premium_test_query = """CREATE TABLE IF NOT EXISTS premium_tests (
                     test_id BIGSERIAL PRIMARY KEY,
-                    link TEXT, 
+                    link TEXT,
                     answer TEXT, 
                     level INTEGER)""" # Создание таблицы платных тестов с голосовыми
                 cursor.execute(sql_create_tb_premium_test_query)
@@ -47,86 +47,86 @@ class DB:
             self.connection.close()
 
 
-    def insert_data_users(self, login: str, password: str, level: int, name: str, score: int) -> None: # Метод создания новой записи в таблице пользователей
+    def insert_data_users(self, login: str, chat_id: str, password: str, level: int, name: str, score: int) -> None: # Метод создания новой записи в таблице пользователей
         self.__DB_connect()
         try:
             with self.connection.cursor() as cursor:
                 self.connection.autocommit = True
-                sql_insert_data_query = """INSERT INTO users (login, password,
-                level, name, score) VALUES (%s, %s, %s, %s, %s)"""
+                sql_insert_data_query = """INSERT INTO users (chat_id, login, password,
+                level, name, score) VALUES (%s, %s, %s, %s, %s, %s)"""
                 cursor.execute(sql_insert_data_query, (
-                            login, password, level, name, score))
+                             chat_id, login, password, level, name, score))
         finally:
             self.connection.close()
 
     
-    def __find_login(self, login: str) -> bool: # Метод поиска логина пользователя из бд
-        self.__DB_connect()
-        try:
-            with self.connection.cursor() as cursor:
-                self.connection.autocommit = True
-                sql_find_login_query = """SELECT login FROM users WHERE login = %s"""
-                cursor.execute(sql_find_login_query, (login,))
-                res = self.cursor.fetchone()
-                return res != None
-        finally:
-            self.connection.close()
+    # def __find_login(self, chat_id: str) -> bool: # Метод поиска логина пользователя из бд
+    #     self.__DB_connect()
+    #     try:
+    #         with self.connection.cursor() as cursor:
+    #             self.connection.autocommit = True
+    #             sql_find_login_query = """SELECT login FROM users WHERE chat_id = %s"""
+    #             cursor.execute(sql_find_login_query, (chat_id,))
+    #             res = self.cursor.fetchone()
+    #             return res != None
+    #     finally:
+    #         self.connection.close()
 
 
-    def update_user_level(self, login: str, level: int) -> None: # Метод обновления уровня знания английского в таблице пользователей
+    def update_user_level(self, chat_id: str, level: int) -> None: # Метод обновления уровня знания английского в таблице пользователей
         self.__DB_connect()
         try:
             with self.connection.cursor() as cursor:
                 self.connection.autocommit = True
                 sql_update_users_level_query = """UPDATE users SET level = %s WHERE login = %s"""
-                cursor.execute(sql_update_users_level_query, (level, login))
+                cursor.execute(sql_update_users_level_query, (level, chat_id))
         finally:
             self.connection.close()
 
     
-    def update_user_name(self, new_name: str, login: str) -> None: # Метод обновления пароля в таблице пользователей
+    def update_user_name(self, new_name: str, chat_id: str) -> None: # Метод обновления пароля в таблице пользователей
         self.__DB_connect()
         try:
             with self.connection.cursor() as cursor:
                 self.connection.autocommit = True
                 sql_update_user_name_query = """UPDATE users SET name = %s WHERE login = %s"""
-                cursor.execute(sql_update_user_name_query, (new_name, login))
+                cursor.execute(sql_update_user_name_query, (new_name, chat_id))
         finally:
 
             self.connection.close()
 
     
-    def update_user_score(self, score: int, login: str) -> None: # Метод обновления пароля в таблице пользователей
+    def update_user_score(self, score: int, chat_id: str) -> None: # Метод обновления пароля в таблице пользователей
         self.__DB_connect()
         try:
             with self.connection.cursor() as cursor:
                 self.connection.autocommit = True
                 sql_update_user_name_query = """UPDATE users SET score = %s WHERE login = %s"""
-                cursor.execute(sql_update_user_name_query, (score, login))
+                cursor.execute(sql_update_user_name_query, (score, chat_id))
         finally:
 
             self.connection.close()
 
 
-    def update_user_password(self, new_password: str, login: str) -> None: # Метод обновления пароля в таблице пользователей
+    def update_user_password(self, new_password: str, chat_id: str) -> None: # Метод обновления пароля в таблице пользователей
         self.__DB_connect()
         try:
             with self.connection.cursor() as cursor:
                 self.connection.autocommit = True
-                sql_update_user_name_query = """UPDATE users SET password = %s WHERE login = %s"""
-                cursor.execute(sql_update_user_name_query, (new_password, login))
+                sql_update_user_name_query = """UPDATE users SET password = %s WHERE chat_id = %s"""
+                cursor.execute(sql_update_user_name_query, (new_password, chat_id))
         finally:
 
             self.connection.close()
 
     
-    def get_user_data(self, login:str) -> list: # Метод получения всех данных пользователя
+    def get_user_data(self, chat_id:str) -> list: # Метод получения всех данных пользователя
         self.__DB_connect()
         try:
             with self.connection.cursor() as cursor:
                 self.connection.autocommit = True
-                sql_find_login_query = """SELECT password, level, name, score  FROM users WHERE login = %s"""
-                cursor.execute(sql_find_login_query, (login,))
+                sql_find_login_query = """SELECT login, password, level, name, score  FROM users WHERE chat_id = %s"""
+                cursor.execute(sql_find_login_query, (chat_id,))
                 return list(cursor.fetchone())
         finally:
             self.connection.close()
