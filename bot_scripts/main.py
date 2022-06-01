@@ -88,11 +88,9 @@ def callback_processing(call) -> None:
 		msg = bot.send_message(call.message.chat.id, 'Тариф "Advanced"\nСюда входит 20%-скидка на премиум-уроки и вы зарабатываете на 50% больше ECoin.\nСтоимость: 199₽/мес')
 
 	elif call_data == 'user_currency':
-		# data_base.get_user_data(id)
-		# score = 
+		res = data_base.get_user_data(call.message.chat.id)
+		score = res[5]
 		"""
-			Целиком переделать базу данных, сделать поиск по chat.id
-			оставить логин для сообщений на почту
 			допилить вступительный тест
 			допилить тестовый режим
 			сделать возможность отправлять аудио

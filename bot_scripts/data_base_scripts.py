@@ -33,15 +33,13 @@ class DB:
                 sql_create_tb_free_test_query = """CREATE TABLE IF NOT EXISTS free_tests (
                     test_id BIGSERIAL PRIMARY KEY,
                     question TEXT, 
-                    answer TEXT, 
-                    level INTEGER)""" # Создание таблицы бесплатных тестов
+                    answer TEXT)""" # Создание таблицы бесплатных тестов
                 cursor.execute(sql_create_tb_free_test_query)
 
                 sql_create_tb_premium_test_query = """CREATE TABLE IF NOT EXISTS premium_tests (
                     test_id BIGSERIAL PRIMARY KEY,
                     link TEXT,
-                    answer TEXT, 
-                    level INTEGER)""" # Создание таблицы платных тестов с голосовыми
+                    answer TEXT)""" # Создание таблицы платных тестов с голосовыми
                 cursor.execute(sql_create_tb_premium_test_query)
         finally:
             self.connection.close()
@@ -132,15 +130,13 @@ class DB:
             self.connection.close()
 
 
-    def get_free_test_data(self, login:str) -> list: # Получение вопроса и ответа бесплатного теста
+    def get_free_test_data(self) -> list: # Получение вопроса и ответа бесплатного теста
         self.__DB_connect()
         try:
             with self.connection.cursor() as cursor:
                 self.connection.autocommit = True
-                level  = self.get_user_data(login)
-                level = level[1]
-                sql_get_test_data_query = """SELECT question, answer  FROM free_tests WHERE level = %s"""
-                cursor.execute(sql_get_test_data_query, (level,))
+                sql_get_test_data_query = """SELECT question, answer  FROM free_tests WHERE test_id = %s"""
+                cursor.execute(sql_get_test_data_query, (randint(0, 5),))
                 return list(self.cursor.fetchone())
 
         finally:
@@ -149,17 +145,18 @@ class DB:
     
     def get_premium_test_data(self):
         pass
+    # INPUT SENDING AUDIO FROM LINKS
 
 
-    def increase_user_score(self, login:str) -> None: # Метод увеличения кол-ва очков юзвера по логину
+    def increase_user_score(self, chat_id:str) -> None: # Метод увеличения кол-ва очков юзвера по логину
         self.__DB_connect()
         try:
             with self.connection.cursor() as cursor:
                 self.connection.autocommit = True
-                user_data  = self.get_user_data(login)
-                user_data[3] += 100
-                sql_update_user_score_query = """UPDATE users SET score = %s WHERE login = %s """
-                cursor.execute(sql_update_user_score_query, (user_data[3], login))
+                user_data  = self.get_user_data(chat_id)
+                user_data[5] += 100
+                sql_update_user_score_query = """UPDATE users SET score = %s WHERE chat_id = %s """
+                cursor.execute(sql_update_user_score_query, (user_data[5], chat_id))
 
         finally:
             self.connection.close()
