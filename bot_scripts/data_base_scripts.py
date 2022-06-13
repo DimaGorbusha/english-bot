@@ -24,10 +24,10 @@ class DB:
                 sql_create_tb_test_data_query = """CREATE TABLE IF NOT EXISTS users (
                     chat_id TEXT PRIMARY KEY,
                     login TEXT UNIQUE, 
-                    password TEXT,
-                    level INTEGER, 
+                    password TEXT, 
                     name TEXT, 
-                    score INTEGER)""" # Создание таблицы пользователей
+                    score INTEGER,
+                    sub_multiplier INTEGER)""" # Создание таблицы пользователей
                 cursor.execute(sql_create_tb_test_data_query)
                 
                 sql_create_tb_free_test_query = """CREATE TABLE IF NOT EXISTS free_tests (
@@ -45,15 +45,16 @@ class DB:
             self.connection.close()
 
 
-    def insert_data_users(self, login: str, chat_id: str, password: str, level: int, name: str, score: int) -> None: # Метод создания новой записи в таблице пользователей
+    def insert_data_user(self, login: str, chat_id: str, password: str, level: int, name: str, score: int, sub_multiplier: int) -> None: # Метод создания новой записи в таблице пользователей
+        self.__create_table()
         self.__DB_connect()
         try:
             with self.connection.cursor() as cursor:
                 self.connection.autocommit = True
                 sql_insert_data_query = """INSERT INTO users (chat_id, login, password,
-                level, name, score) VALUES (%s, %s, %s, %s, %s, %s)"""
+                level, name, score, sub_multiplier) VALUES (%s, %s, %s, %s, %s, %s, %s)"""
                 cursor.execute(sql_insert_data_query, (
-                             chat_id, login, password, level, name, score))
+                             chat_id, login, password, level, name, score, sub_multiplier))
         finally:
             self.connection.close()
 
@@ -71,18 +72,18 @@ class DB:
     #         self.connection.close()
 
 
-    def update_user_level(self, chat_id: str, level: int) -> None: # Метод обновления уровня знания английского в таблице пользователей
-        self.__DB_connect()
-        try:
-            with self.connection.cursor() as cursor:
-                self.connection.autocommit = True
-                sql_update_users_level_query = """UPDATE users SET level = %s WHERE login = %s"""
-                cursor.execute(sql_update_users_level_query, (level, chat_id))
-        finally:
-            self.connection.close()
+    # def update_user_level(self, chat_id: str, level: int) -> None: # Метод обновления уровня знания английского в таблице пользователей
+    #     self.__DB_connect()
+    #     try:
+    #         with self.connection.cursor() as cursor:
+    #             self.connection.autocommit = True
+    #             sql_update_users_level_query = """UPDATE users SET level = %s WHERE login = %s"""
+    #             cursor.execute(sql_update_users_level_query, (level, chat_id))
+    #     finally:
+    #         self.connection.close()
 
     
-    def update_user_name(self, new_name: str, chat_id: str) -> None: # Метод обновления пароля в таблице пользователей
+    def update_user_name(self, new_name: str, chat_id: str) -> None: # Метод обновления имени
         self.__DB_connect()
         try:
             with self.connection.cursor() as cursor:

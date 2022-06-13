@@ -1,6 +1,7 @@
 import telebot
 from telebot import types
 from data_base_scripts import DB
+from random import randint
 
 # @englik_bot
 
@@ -23,6 +24,7 @@ keyboard_subs = types.InlineKeyboardMarkup(row_width = 1)
 login_menu_btn_signin = types.InlineKeyboardButton('🚪 Войти', callback_data = 'signin')
 login_menu_btn_signup = types.InlineKeyboardButton('🔐 Зарегистрироваться', callback_data = 'signup')
 login_menu_btn_test = types.InlineKeyboardButton('✏️ Тестовый режим', callback_data = 'try_test')
+login_menu_btn_forgoten_pass = types.InlineKeyboardButton('🌬 Забыли пароль?', callback_data = 'frg_pss')
 main_menu_btn_start = types.InlineKeyboardButton('👩‍🏫 Начать учиться', callback_data='start_learn')
 main_menu_btn_lessons = types.InlineKeyboardButton('🏫 Перейти к урокам', callback_data='lessons')
 main_menu_btn_buy_lessons = types.InlineKeyboardButton('💵 Купить премиум-уроки', callback_data='buy_premium_lessons')
@@ -46,8 +48,8 @@ keyboard_subs.add(sub_beginner_btn, sub_intermediate_btn, sub_advanced_btn)
 #----Основной код----
 @bot.message_handler(commands=['start']) # Обработчик команды старт
 def start(message) -> None:	
-	bot.send_message(message.chat.id, f'👋 Привет, я бот изучения английского языка для IT!\n Для начала, вам надо зарегистрироваться или войти:', reply_markup = keyboard_main_menu)
-
+	bot.send_message(message.chat.id, f'👋 Привет, я бот изучения английского языка для IT!\n Для начала, вам надо зарегистрироваться или войти. Или попробуйте тестовый режим!', reply_markup = keyboard_main_menu)
+	data_base.insert_data_user("ffffff", str(message.chat.id), "ejiowjpj", 4, "gdpkp", 78, 0)
 
 @bot.callback_query_handler(func = lambda call: True) # Обработчик callback'а
 def callback_processing(call) -> None:
@@ -90,19 +92,13 @@ def callback_processing(call) -> None:
 	elif call_data == 'user_currency':
 		res = data_base.get_user_data(call.message.chat.id)
 		score = res[5]
-		"""
-			допилить вступительный тест
-			допилить тестовый режим
-			сделать возможность отправлять аудио
-			-------
-			настроить сервак (постгре14, прокинуть порты и т.д.)
-			заполнить бд вопросами
-			сделать 5 вопросов гс(ссылки на папки)
-		"""
 		msg = bot.send_message(call.message.chat.id, f'Ваш счёт ECoin: + {score}')
 
 	elif call_data == 'back': # Возврат назад
-		main_menu() 
+		main_menu()
+	
+	elif call_data == 'frg_pss':
+		pass
 
 
 def signin_login(message) -> None: # Метод ввода логина для входа
