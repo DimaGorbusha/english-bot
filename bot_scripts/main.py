@@ -3,7 +3,7 @@ from telebot import types
 from data_base_scripts import DB
 from random import randint
 
-# @englik_bot
+# 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 
 
 data_base = DB()
 

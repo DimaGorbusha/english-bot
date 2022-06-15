@@ -76,7 +76,7 @@ class DB:
                 self.connection.autocommit = True
                 sql_update_user_name_query = """UPDATE users SET score = %s WHERE login = %s"""
                 cursor.execute(sql_update_user_name_query, (score, chat_id))
-        finally:
+        finally: 
 
             self.connection.close()
 
