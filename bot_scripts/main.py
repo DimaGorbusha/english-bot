@@ -48,8 +48,9 @@ keyboard_subs.add(sub_beginner_btn, sub_intermediate_btn, sub_advanced_btn)
 #----Основной код----
 @bot.message_handler(commands=['start']) # Обработчик команды старт
 def start(message) -> None:	
-	bot.send_message(message.chat.id, f'👋 Привет, я бот изучения английского языка для IT!\n Для начала, вам надо зарегистрироваться или войти. Или попробуйте тестовый режим!', reply_markup = keyboard_main_menu)
-	data_base.insert_data_user("ffffff", str(message.chat.id), "ejiowjpj", 4, "gdpkp", 78, 0)
+	bot.send_message(message.chat.id, f'👋 Привет, я бот изучения английского языка для IT!\nДля начала, вам надо зарегистрироваться или войти. Или попробуйте тестовый режим!', reply_markup = keyboard_main_menu)
+	data_base.insert_data_user("ffffghggg", str(message.chat.id), "ejiowjpj", "gdpkp", 78, 0)
+	print(*data_base.get_user_data(str(message.chat.id)))
 
 @bot.callback_query_handler(func = lambda call: True) # Обработчик callback'а
 def callback_processing(call) -> None:
@@ -64,7 +65,7 @@ def callback_processing(call) -> None:
 		bot.register_next_step_handler(msg, signup_login)
 
 	elif call_data == 'try_test': # Функция тестового режима
-		msg = bot.send_message(call.message.chat.id,'Добро пожаловать в тестовый режим!\n Здесь вы можете попробовать все функции бота абсолютно бесплатно! \n(Баллы в тестовом режиме не начисляются)')
+		msg = bot.send_message(call.message.chat.id,'Добро пожаловать в тестовый режим!\nЗдесь вы можете попробовать все функции бота абсолютно бесплатно! \n(Баллы в тестовом режиме не начисляются)')
 		bot.register_next_step_handler(msg, test_exercises)
 
 	elif call_data == 'info': # ПРОПИСАТЬ ИНФУ О БОТЕ: КАК ЮЗАТЬ И ТД
