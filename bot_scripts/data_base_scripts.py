@@ -1,6 +1,6 @@
 import psycopg2
 from random import randint
-
+# huy\\//govno228
 class DB:
     """
         Класс базы данных со всеми методами для получения, изменения всех данных в таблицах.
@@ -45,42 +45,16 @@ class DB:
             self.connection.close()
 
 
-    def insert_data_user(self, login: str, chat_id: str, password: str, level: int, name: str, score: int, sub_multiplier: int) -> None: # Метод создания новой записи в таблице пользователей
-        self.__create_table()
+    def insert_data_user(self, login: str, chat_id: str, password: str, name: str, score: int, sub_multiplier: int) -> None: # Метод создания новой записи в таблице пользователей
         self.__DB_connect()
         try:
             with self.connection.cursor() as cursor:
                 self.connection.autocommit = True
-                sql_insert_data_query = """INSERT INTO users (chat_id, login, password,
-                level, name, score, sub_multiplier) VALUES (%s, %s, %s, %s, %s, %s, %s)"""
+                sql_insert_data_query = """INSERT INTO users (chat_id, login, password, name, score, sub_multiplier) VALUES (%s, %s, %s, %s, %s, %s)"""
                 cursor.execute(sql_insert_data_query, (
-                             chat_id, login, password, level, name, score, sub_multiplier))
+                             chat_id, login, password, name, score, sub_multiplier))
         finally:
             self.connection.close()
-
-    
-    # def __find_login(self, chat_id: str) -> bool: # Метод поиска логина пользователя из бд
-    #     self.__DB_connect()
-    #     try:
-    #         with self.connection.cursor() as cursor:
-    #             self.connection.autocommit = True
-    #             sql_find_login_query = """SELECT login FROM users WHERE chat_id = %s"""
-    #             cursor.execute(sql_find_login_query, (chat_id,))
-    #             res = self.cursor.fetchone()
-    #             return res != None
-    #     finally:
-    #         self.connection.close()
-
-
-    # def update_user_level(self, chat_id: str, level: int) -> None: # Метод обновления уровня знания английского в таблице пользователей
-    #     self.__DB_connect()
-    #     try:
-    #         with self.connection.cursor() as cursor:
-    #             self.connection.autocommit = True
-    #             sql_update_users_level_query = """UPDATE users SET level = %s WHERE login = %s"""
-    #             cursor.execute(sql_update_users_level_query, (level, chat_id))
-    #     finally:
-    #         self.connection.close()
 
     
     def update_user_name(self, new_name: str, chat_id: str) -> None: # Метод обновления имени
@@ -124,7 +98,7 @@ class DB:
         try:
             with self.connection.cursor() as cursor:
                 self.connection.autocommit = True
-                sql_find_login_query = """SELECT login, password, level, name, score  FROM users WHERE chat_id = %s"""
+                sql_find_login_query = """SELECT chat_id, login, password, name, score  FROM users WHERE chat_id = %s"""
                 cursor.execute(sql_find_login_query, (chat_id,))
                 return list(cursor.fetchone())
         finally:
