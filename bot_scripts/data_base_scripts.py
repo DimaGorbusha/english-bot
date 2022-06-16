@@ -118,6 +118,18 @@ class DB:
             self.connection.close()
 
     
+    def add_free_test_data(self, question:str, answer:str) -> None:
+        self.__DB_connect()
+        try:
+            with self.connection.cursor() as cursor:
+                self.connection.autocommit = True
+                sql_insert_data_query = """INSERT INTO free_tests (question, answer) VALUES (%s, %s)"""
+                cursor.execute(sql_insert_data_query, (
+                             question, answer))
+
+        finally:
+            self.connection.close()
+
     def get_premium_test_data(self):
         pass
     # INPUT SENDING AUDIO FROM LINKS
